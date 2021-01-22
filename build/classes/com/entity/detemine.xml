@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.dao.DetemineDAO">
+	<resultMap type="detemine" id="detemineMap">
+		<id property="detemineid" column="detemineid" />
+		<result property="adminid" column="adminid" />
+		<result property="vegsid" column="vegsid" />
+		<result property="num" column="num" />
+		<result property="addtime" column="addtime" />
+		<result property="realname" column="realname" />
+		<result property="vegsname" column="vegsname" />
+		<result property="snum" column="snum" />
+		<result property="price" column="price" />
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertDetemine" parameterType="detemine">
+		insert into
+		detemine(detemineid , adminid , vegsid , num , addtime )
+		values(#{detemineid} , #{adminid} , #{vegsid} , #{num} , #{addtime} )
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+	<update id="updateDetemine" parameterType="detemine">
+		update detemine set
+		adminid=#{adminid} , vegsid=#{vegsid} , num=#{num} ,
+		addtime=#{addtime} where detemineid=#{detemineid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteDetemine" parameterType="String">
+		delete from detemine
+		where detemineid = #{detemineid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置 -->
+	<select id="getAllDetemine" resultMap="detemineMap">
+		select a.* , b.realname ,
+		c.vegsname , c.snum , c.price from detemine a , admin b , vegs c
+		where a.adminid
+		= b.adminid and a.vegsid = c.vegsid order by
+		detemineid desc
+	</select>
+	<!-- 按主键查询 DAO通过id调用此配置 -->
+	<select id="getDetemineById" parameterType="String" resultMap="detemineMap">
+		select a.* , b.realname , c.vegsname , c.snum , c.price from detemine
+		a , admin b ,
+		vegs c where a.adminid = b.adminid and a.vegsid =
+		c.vegsid
+		and detemineid=#{detemineid} order by detemineid desc
+	</select>
+	<!-- 按条件精确查询 DAO通过id调用此配置 -->
+	<select id="getDetemineByCond" parameterType="detemine"
+		resultMap="detemineMap">
+		select a.* , b.realname , c.vegsname , c.snum , c.price from detemine
+		a , admin b ,
+		vegs c where a.adminid = b.adminid and a.vegsid =
+		c.vegsid
+		<if test="adminid != null and '' != adminid">
+			and a.adminid = #{adminid}
+		</if>
+		<if test="vegsid != null and '' != vegsid">
+			and a.vegsid = #{vegsid}
+		</if>
+		<if test="num != null and '' != num">
+			and a.num = #{num}
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime = #{addtime}
+		</if>
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置 -->
+	<select id="getDetemineByLike" parameterType="detemine"
+		resultMap="detemineMap">
+		select a.* , b.realname , c.vegsname , c.snum , c.price from detemine
+		a , admin b ,
+		vegs c where a.adminid = b.adminid and a.vegsid =
+		c.vegsid
+		<if test="adminid != null and '' != adminid">
+			and a.adminid like CONCAT('%', CONCAT(#{adminid}, '%'))
+		</if>
+		<if test="vegsid != null and '' != vegsid">
+			and a.vegsid like CONCAT('%', CONCAT(#{vegsid}, '%'))
+		</if>
+		<if test="num != null and '' != num">
+			and a.num like CONCAT('%', CONCAT(#{num}, '%'))
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime like CONCAT('%', CONCAT(#{addtime}, '%'))
+		</if>
+	</select>
+</mapper>
+
+

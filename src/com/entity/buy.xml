@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.dao.BuyDAO">
+	<resultMap type="buy" id="buyMap">
+		<id property="buyid" column="buyid" />
+		<result property="buyno" column="buyno" />
+		<result property="vegsid" column="vegsid" />
+		<result property="num" column="num" />
+		<result property="price" column="price" />
+		<result property="adminid" column="adminid" />
+		<result property="addtime" column="addtime" />
+		<result property="memo" column="memo" />
+		<result property="vegsname" column="vegsname" />
+		<result property="realname" column="realname" />
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertBuy" parameterType="buy">
+		insert into buy(buyid , buyno , vegsid , num , price , adminid , addtime ,
+		memo ) values(#{buyid} , #{buyno} , #{vegsid} , #{num} , #{price} ,
+		#{adminid} , #{addtime} , #{memo} )
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+	<update id="updateBuy" parameterType="buy">
+		update buy set buyno=#{buyno} , vegsid=#{vegsid} , num=#{num} ,
+		price=#{price} , adminid=#{adminid} , addtime=#{addtime} ,
+		memo=#{memo} where buyid=#{buyid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteBuy" parameterType="String">
+		delete from buy where buyid = #{buyid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置 -->
+	<select id="getAllBuy" resultMap="buyMap">
+		select a.* , b.vegsname , c.realname from buy a , vegs b , admin c where
+		1=1 and a.vegsid = b.vegsid and a.adminid = c.adminid order by buyid
+		desc
+	</select>
+	<!-- 按主键查询 DAO通过id调用此配置 -->
+	<select id="getBuyById" parameterType="String" resultMap="buyMap">
+		select a.* , b.vegsname , c.realname from buy a , vegs b , admin c where
+		1=1 and a.vegsid = b.vegsid and a.adminid = c.adminid and
+		buyid=#{buyid} order by buyid desc
+	</select>
+	<!-- 按条件精确查询 DAO通过id调用此配置 -->
+	<select id="getBuyByCond" parameterType="buy" resultMap="buyMap">
+		select a.* , b.vegsname , c.realname from buy a , vegs b , admin c
+		where 1=1 and a.vegsid = b.vegsid and a.adminid = c.adminid
+		<if test="buyno != null and '' != buyno">
+			and a.buyno = #{buyno}
+		</if>
+		<if test="vegsid != null and '' != vegsid">
+			and a.vegsid = #{vegsid}
+		</if>
+		<if test="num != null and '' != num">
+			and a.num = #{num}
+		</if>
+		<if test="price != null and '' != price">
+			and a.price = #{price}
+		</if>
+		<if test="adminid != null and '' != adminid">
+			and a.adminid = #{adminid}
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime = #{addtime}
+		</if>
+		<if test="memo != null and '' != memo">
+			and a.memo = #{memo}
+		</if>
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置 -->
+	<select id="getBuyByLike" parameterType="buy" resultMap="buyMap">
+		select a.* , b.vegsname , c.realname from buy a , vegs b , admin c
+		where 1=1 and a.vegsid = b.vegsid and a.adminid = c.adminid
+		<if test="buyno != null and '' != buyno">
+			and a.buyno like CONCAT('%', CONCAT(#{buyno}, '%'))
+		</if>
+		<if test="vegsid != null and '' != vegsid">
+			and a.vegsid like CONCAT('%', CONCAT(#{vegsid}, '%'))
+		</if>
+		<if test="num != null and '' != num">
+			and a.num like CONCAT('%', CONCAT(#{num}, '%'))
+		</if>
+		<if test="price != null and '' != price">
+			and a.price like CONCAT('%', CONCAT(#{price}, '%'))
+		</if>
+		<if test="adminid != null and '' != adminid">
+			and a.adminid like CONCAT('%', CONCAT(#{adminid}, '%'))
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime like CONCAT('%', CONCAT(#{addtime}, '%'))
+		</if>
+		<if test="memo != null and '' != memo">
+			and a.memo like CONCAT('%', CONCAT(#{memo}, '%'))
+		</if>
+	</select>
+</mapper>
+
+

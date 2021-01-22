@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.dao.ConfDAO">
+	<resultMap type="conf" id="confMap">
+		<id property="confid" column="confid" />
+		<result property="cycles" column="cycles" />
+		<result property="themax" column="themax" />
+		<result property="themin" column="themin" />
+		<result property="parama" column="parama" />
+		<result property="paramb" column="paramb" />
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertConf" parameterType="conf">
+		insert into conf(confid , cycles , themax , themin , parama , paramb )
+		values(#{confid} , #{cycles} , #{themax} , #{themin} , #{parama} ,
+		#{paramb} )
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+	<update id="updateConf" parameterType="conf">
+		update conf set cycles=#{cycles} , themax=#{themax} , themin=#{themin} ,
+		parama=#{parama} , paramb=#{paramb} where confid=#{confid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteConf" parameterType="String">
+		delete from conf where confid = #{confid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置 -->
+	<select id="getAllConf" resultMap="confMap">
+		select a.* from conf a where 1=1 order by confid desc
+	</select>
+	<!-- 按主键查询 DAO通过id调用此配置 -->
+	<select id="getConfById" parameterType="String" resultMap="confMap">
+		select a.* from conf a where 1=1 and confid=#{confid} order by confid
+		desc
+	</select>
+	<!-- 按条件精确查询 DAO通过id调用此配置 -->
+	<select id="getConfByCond" parameterType="conf" resultMap="confMap">
+		select a.* from conf a where 1=1
+		<if test="cycles != null and '' != cycles">
+			and a.cycles = #{cycles}
+		</if>
+		<if test="themax != null and '' != themax">
+			and a.themax = #{themax}
+		</if>
+		<if test="themin != null and '' != themin">
+			and a.themin = #{themin}
+		</if>
+		<if test="parama != null and '' != parama">
+			and a.parama = #{parama}
+		</if>
+		<if test="paramb != null and '' != paramb">
+			and a.paramb = #{paramb}
+		</if>
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置 -->
+	<select id="getConfByLike" parameterType="conf" resultMap="confMap">
+		select a.* from conf a where 1=1
+		<if test="cycles != null and '' != cycles">
+			and a.cycles like CONCAT('%', CONCAT(#{cycles}, '%'))
+		</if>
+		<if test="themax != null and '' != themax">
+			and a.themax like CONCAT('%', CONCAT(#{themax}, '%'))
+		</if>
+		<if test="themin != null and '' != themin">
+			and a.themin like CONCAT('%', CONCAT(#{themin}, '%'))
+		</if>
+		<if test="parama != null and '' != parama">
+			and a.parama like CONCAT('%', CONCAT(#{parama}, '%'))
+		</if>
+		<if test="paramb != null and '' != paramb">
+			and a.paramb like CONCAT('%', CONCAT(#{paramb}, '%'))
+		</if>
+	</select>
+</mapper>
+
+

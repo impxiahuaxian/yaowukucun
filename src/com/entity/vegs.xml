@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.dao.VegsDAO">
+	<resultMap type="vegs" id="vegsMap">
+		<id property="vegsid" column="vegsid" />
+		<result property="vegsname" column="vegsname" />
+		<result property="cateid" column="cateid" />
+		<result property="price" column="price" />
+		<result property="snum" column="snum" />
+		<result property="product" column="product" />
+		<result property="memo" column="memo" />
+		<result property="addtime" column="addtime" />
+		<result property="catename" column="catename" />
+		<result property="vno" column="vno" />
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertVegs" parameterType="vegs">
+		insert into vegs(vegsid , vegsname , cateid , price , snum , product ,
+		memo , addtime , vno ) values(#{vegsid} , #{vegsname} , #{cateid} ,
+		#{price} , #{snum} , #{product} , #{memo} , #{addtime} , #{vno} )
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+	<update id="updateVegs" parameterType="vegs">
+		update vegs set vegsname=#{vegsname} , cateid=#{cateid} , price=#{price}
+		, snum=#{snum} , product=#{product} , memo=#{memo} ,
+		addtime=#{addtime} , vno=#{vno} where vegsid=#{vegsid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteVegs" parameterType="String">
+		delete from vegs where vegsid = #{vegsid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置 -->
+	<select id="getAllVegs" resultMap="vegsMap">
+		select a.* , b.catename from vegs a , cate b where 1=1 and a.cateid =
+		b.cateid order by vegsid desc
+	</select>
+	<!-- 按主键查询 DAO通过id调用此配置 -->
+	<select id="getVegsById" parameterType="String" resultMap="vegsMap">
+		select a.* , b.catename from vegs a , cate b where 1=1 and a.cateid =
+		b.cateid and vegsid=#{vegsid} order by vegsid desc
+	</select>
+	<!-- 按条件精确查询 DAO通过id调用此配置 -->
+	<select id="getVegsByCond" parameterType="vegs" resultMap="vegsMap">
+		select a.* , b.catename from vegs a , cate b where 1=1 and a.cateid =
+		b.cateid
+		<if test="vegsname != null and '' != vegsname">
+			and a.vegsname = #{vegsname}
+		</if>
+		<if test="cateid != null and '' != cateid">
+			and a.cateid = #{cateid}
+		</if>
+		<if test="price != null and '' != price">
+			and a.price = #{price}
+		</if>
+		<if test="snum != null and '' != snum">
+			and a.snum = #{snum}
+		</if>
+		<if test="product != null and '' != product">
+			and a.product = #{product}
+		</if>
+		<if test="memo != null and '' != memo">
+			and a.memo = #{memo}
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime = #{addtime}
+		</if>
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置 -->
+	<select id="getVegsByLike" parameterType="vegs" resultMap="vegsMap">
+		select a.* , b.catename from vegs a , cate b where 1=1 and a.cateid =
+		b.cateid
+		<if test="vegsname != null and '' != vegsname">
+			and a.vegsname like CONCAT('%', CONCAT(#{vegsname}, '%'))
+		</if>
+		<if test="cateid != null and '' != cateid">
+			and a.cateid like CONCAT('%', CONCAT(#{cateid}, '%'))
+		</if>
+		<if test="price != null and '' != price">
+			and a.price like CONCAT('%', CONCAT(#{price}, '%'))
+		</if>
+		<if test="snum != null and '' != snum">
+			and a.snum like CONCAT('%', CONCAT(#{snum}, '%'))
+		</if>
+		<if test="product != null and '' != product">
+			and a.product like CONCAT('%', CONCAT(#{product}, '%'))
+		</if>
+		<if test="memo != null and '' != memo">
+			and a.memo like CONCAT('%', CONCAT(#{memo}, '%'))
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime like CONCAT('%', CONCAT(#{addtime}, '%'))
+		</if>
+	</select>
+</mapper>
+
+
